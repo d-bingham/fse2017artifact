@@ -1,0 +1,12 @@
+K auto break case char const continue default
+K do double else enum extern float for goto
+K if inline int long register restrict return
+K short signed sizeof static struct switch
+K typedef union unsigned void volatile while
+O = += -= *= /= %= &= |= ^= < <= > >= ++ --
+O + - * / % ~ & | ^ << >> ! && ||
+O == != < > <= >= [ ] -> . ( ) , ? : { }
+Q ' "
+C /* */
+c //
+
