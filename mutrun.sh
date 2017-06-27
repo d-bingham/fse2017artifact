@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "Building toolchain..."
 
-make -C $DIR/code
+make -C $DIR/code rebuild
 
 mkdir -p $DIR/results
 mkdir -p $DIR/tmp
@@ -15,13 +15,14 @@ mkdir -p $DIR/space
 rm -f $DIR/results/*
 rm -f $DIR/tmp/*
 
-gunzip $DIR/github_scrape/*.gz
+gunzip $DIR/github_scrape/*.gz || : 
 
 if [ ! -f $DIR/mutants.dat ]; then
 	$DIR/code/bin/mutgen -d $DIR/clanguage.def -x $DIR/mutants.dat -i $DIR/github_scrape/*.git --trim-text --allow-adjacent
+	sort $DIR/mutants.dat -o $DIR/mutants.dat
 fi
 
-gcc -w $DIR/space_orig/space.c -o $DIR/space_orig/space_orig -lm
+gcc -w $DIR/space_orig/space.c -o $DIR/space_orig/space_orig -lm || :
 
 uid=0
 
@@ -48,10 +49,11 @@ while read mutant; do
 	echo "Building mutant"
 	
 
-	gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1
+	gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1 || :
 
 #	if gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1; then
 	if [ -f $DIR/space/space_mutated ]; then
+		echo "Mutant compiled; testing"
 		let "compiled += 1"
 
 		for fn in $DIR/inputs/*.adl; do
