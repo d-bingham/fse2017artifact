@@ -9,14 +9,20 @@ platform).
 
 ## Important files and directories
   * [The Care and Feeding of Wild-Caught Mutants](paper.pdf) - The paper as submitted
+  * [Dockerfile](Dockerfile) - A Dockerfile which, when built, compiles the toolchain and runs the 	     experiment subset 
   *	[Wild-Caught Mutant Demo video](wcm_demo.mp4) - A narrated video showing a brief demo of the toolchain
-  * [mutrun.sh](mutrun.sh) - A bash script which executes a subset of the experiment
+  * [mutrun.sh](mutrun.sh) - A bash script which executes a subset of the experiment; this should work on *most* Linux systems (see below), but for evaluation of the artifact using the Docker instance is strongly preferred
   * [code](code) - Source code for the Wild-Caught Mutants toolchain
   * [github_scrape](github_scrape) - A subset of the source 
 	control repository revision histories utilized in the experiment (specifically, the Linux kernal revision history is omitted for space and time concerns)
-  * [Dockerfile](Dockerfile) - A Dockerfile which, when built, compiles the toolchain and runs the experiment subset
 
 ## Instructions for use
+
+A [Dockerfile](Dockerfile) is provided to automate the 
+process of executing the experimental subset.  Building the Docker
+instance from the Dockerfile (e.g., `docker build .` from the artifact's root
+directory, `sudo` use often required) will automatically run the experiment script 
+and display the results.
 
 The toolchain (mutgen and mutins) can be built from the [code](code) directory 
 with make.
@@ -27,14 +33,13 @@ and performs a subset of the paper's experimentation) is performed by the
 performed by this script is chosen to take roughly half an hour on
 typical desktop hardware.
 
-A [Dockerfile](Dockerfile) is provided to automate the 
-process of executing the experimental subset.  Building the Docker
-instance from the Dockerfile will automatically run the experiment script 
-and display the results.
 
 ## Note!
 
-We have noticed some unusual behavior with the test suites when using gcc 6.  If you have such a compiler version, please run the Docker version of the artifact.
+We have noticed some unusual behavior with the test suites when using certain 
+versions of gcc, especially gcc version 6.  As we do not currently have the
+resources to exhaustively test the experiment across a wide variety of 
+environments, we strongly suggest use of the provided Docker container.
 
 ## Evaluation
 
