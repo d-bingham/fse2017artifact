@@ -59,14 +59,14 @@ while read mutant; do
 
 			let "uid += 1"
 
-			{ $DIR/space/space_mutated $rfn &> $DIR/tmp/$uid.txt || : ; } > /dev/null 2>&1
+			{ $DIR/space/space_mutated $rfn &> $DIR/tmp/$uid.txt ; } > /dev/null 2>&1 || :
 
 			if [ $? -eq 139 ]; then
 				echo "SEGFAULT" > $DIR/tmp/$uid.txt
 				rm -f core.*
 			fi
 
-			{ $DIR/space_orig/space_orig $rfn &> $DIR/tmp/orig$uid.txt || : ; } > /dev/null 2>&1
+			{ $DIR/space_orig/space_orig $rfn &> $DIR/tmp/orig$uid.txt || : ; } > /dev/null 2>&1 || :
 
 			if [ $? -eq 139 ]; then
 				echo "SEGFAULT" > $DIR/tmp/orig$uid.txt
