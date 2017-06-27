@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/bash -eu
 
+export LIBC_FATAL_STDERR_=1
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" 
 
 echo "Building toolchain..."
 
@@ -42,10 +43,15 @@ while read mutant; do
 
 	rm -f $DIR/results/$mutant.txt
 	rm -f $DIR/tmp/*
+	rm -f $DIR/space/space_mutated
 
 	echo "Building mutant"
+	
 
-	if gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1; then
+	gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1
+
+#	if gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1; then
+	if [ -f $DIR/space/space_mutated ]; then
 		let "compiled += 1"
 
 		for fn in $DIR/inputs/*.adl; do
@@ -53,14 +59,14 @@ while read mutant; do
 
 			let "uid += 1"
 
-			$DIR/space/space_mutated $rfn &> $DIR/tmp/$uid.txt
+			{ $DIR/space/space_mutated $rfn &> $DIR/tmp/$uid.txt ; } > /dev/null 2>&1
 
 			if [ $? -eq 139 ]; then
 				echo "SEGFAULT" > $DIR/tmp/$uid.txt
 				rm -f core.*
 			fi
 
-			$DIR/space_orig/space_orig $rfn &> $DIR/tmp/orig$uid.txt
+			{ $DIR/space_orig/space_orig $rfn &> $DIR/tmp/orig$uid.txt ; } > /dev/null 2>&1
 
 			if [ $? -eq 139 ]; then
 				echo "SEGFAULT" > $DIR/tmp/orig$uid.txt
