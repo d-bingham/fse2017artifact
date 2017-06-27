@@ -88,13 +88,14 @@ while read mutant; do
 		let "total += 5000"
 
 	else
+		echo "Compilation of mutant failed."
 		let "compfailed += 1"
 		echo "X" >> $DIR/results/$mutant.txt
 	fi
 
-	echo $pass
-	echo $fail
-	echo $total
+#	echo $pass
+#	echo $fail
+#	echo $total
 
 done < $DIR/mutants.list
 
