@@ -1,8 +1,10 @@
 #!/bin/bash -eu
 
 export LIBC_FATAL_STDERR_=1
+export LC_ALL=en_US.UTF-8
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" 
+
 
 echo "Building toolchain..."
 
