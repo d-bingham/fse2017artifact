@@ -14,7 +14,7 @@ mkdir -p $DIR/space
 rm -f $DIR/results/*
 rm -f $DIR/tmp/*
 
-gunzip $DIR/github_scrape/*
+gunzip $DIR/github_scrape/*.gz
 
 $DIR/code/bin/mutgen -d $DIR/clanguage.def -x $DIR/mutants.dat -i $DIR/github_scrape/*.git --trim-text --allow-adjacent
 
@@ -41,7 +41,9 @@ while read mutant; do
 	rm -f $DIR/results/$mutant.txt
 	rm -f $DIR/tmp/*
 
-	if gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm; then
+	echo "Building mutant"
+
+	if gcc -w $DIR/space/space.c -o $DIR/space/space_mutated -lm > /dev/null 2>&1; then
 		let "compiled += 1"
 
 		for fn in $DIR/inputs/*.adl; do
