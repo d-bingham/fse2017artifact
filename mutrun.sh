@@ -16,7 +16,9 @@ rm -f $DIR/tmp/*
 
 gunzip $DIR/github_scrape/*.gz
 
-$DIR/code/bin/mutgen -d $DIR/clanguage.def -x $DIR/mutants.dat -i $DIR/github_scrape/*.git --trim-text --allow-adjacent
+if [ ! -f $DIR/mutants.dat ]; then
+	$DIR/code/bin/mutgen -d $DIR/clanguage.def -x $DIR/mutants.dat -i $DIR/github_scrape/*.git --trim-text --allow-adjacent
+fi
 
 gcc -w $DIR/space_orig/space.c -o $DIR/space_orig/space_orig -lm
 
